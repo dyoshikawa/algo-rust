@@ -35,3 +35,65 @@ fn test_p269() {
     ];
     assert_eq!(p269(n, vss), expected);
 }
+
+#[allow(dead_code)]
+fn p273(n: i32, argss: &[&[i32]]) -> Vec<Vec<i32>> {
+    fn dfs(
+        graph: &HashMap<i32, Vec<i32>>,
+        visited: &mut Vec<bool>,
+        cnt: &mut i32,
+        cnts: &mut Vec<Vec<i32>>,
+        now: i32,
+    ) {
+        visited[now as usize] = true;
+        *cnt += 1;
+        cnts[now as usize][0] = *cnt;
+
+        for v in graph.get(&now).unwrap().iter() {
+            if !visited[*v as usize] {
+                dfs(&graph, visited, cnt, cnts, *v);
+            }
+        }
+
+        *cnt += 1;
+        cnts[now as usize][1] = *cnt;
+    }
+
+    let mut graph: HashMap<i32, Vec<i32>> = HashMap::new();
+    for (i, args) in (0_i32..).zip(argss.iter()) {
+        graph.insert(i, vec![]);
+        for (j, arg) in (0_i32..).zip(args.iter()) {
+            if [0, 1].contains(&j) {
+                continue;
+            }
+            graph.get_mut(&i).unwrap().push(arg - 1);
+        }
+    }
+
+    let mut visited = vec![false; n as usize];
+    let mut cnts = vec![vec![0; 2]; n as usize];
+    dfs(&graph, &mut visited, &mut 0, &mut cnts, 0);
+    cnts
+}
+
+#[test]
+fn test_p273() {
+    let n = 6;
+    let argss: &[&[i32]] = &[
+        &[1, 2, 2, 3],
+        &[2, 2, 3, 4],
+        &[3, 1, 5],
+        &[4, 1, 6],
+        &[5, 1, 6],
+        &[6, 0],
+    ];
+    let expected = vec![
+        vec![1, 12],
+        vec![2, 11],
+        vec![3, 8],
+        vec![9, 10],
+        vec![4, 7],
+        vec![5, 6],
+    ];
+    assert_eq!(p273(n, argss), expected);
+}
