@@ -76,6 +76,54 @@ fn p273(n: i32, argss: &[&[i32]]) -> Vec<Vec<i32>> {
     cnts
 }
 
+#[allow(dead_code)]
+fn p273_struct_params(n: i32, argss: &[&[i32]]) -> Vec<Vec<i32>> {
+    type Graph = HashMap<i32, Vec<i32>>;
+    struct DfsParams {
+        visited: Vec<bool>,
+        cnt: i32,
+        cnts: Vec<Vec<i32>>,
+        now: i32,
+    }
+
+    fn dfs(graph: &Graph, params: &mut DfsParams) {
+        params.visited[params.now as usize] = true;
+        params.cnt += 1;
+        params.cnts[params.now as usize][0] = params.cnt;
+
+        for v in graph.get(&params.now).unwrap().iter() {
+            if !params.visited[*v as usize] {
+                dfs(&graph, params);
+            }
+        }
+
+        params.cnt += 1;
+        params.cnts[params.now as usize][1] = params.cnt;
+    }
+
+    let mut graph: Graph = HashMap::new();
+    for (i, args) in (0_i32..).zip(argss.iter()) {
+        graph.insert(i, vec![]);
+        for (j, arg) in (0_i32..).zip(args.iter()) {
+            if [0, 1].contains(&j) {
+                continue;
+            }
+            graph.get_mut(&i).unwrap().push(arg - 1);
+        }
+    }
+
+    let visited = vec![false; n as usize];
+    let cnts = vec![vec![0; 2]; n as usize];
+    let mut params = DfsParams {
+        cnts,
+        cnt: 0,
+        now: 0,
+        visited,
+    };
+    dfs(&graph, &mut params);
+    params.cnts
+}
+
 #[test]
 fn p273_test() {
     let n = 6;
@@ -96,6 +144,7 @@ fn p273_test() {
         vec![5, 6],
     ];
     assert_eq!(p273(n, argss), expected);
+    assert_eq!(p273_struct_params(n, argss), expected)
 }
 
 #[allow(dead_code)]
