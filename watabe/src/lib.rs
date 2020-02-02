@@ -83,22 +83,23 @@ fn p273_struct_params(n: i32, argss: &[&[i32]]) -> Vec<Vec<i32>> {
         visited: Vec<bool>,
         cnt: i32,
         cnts: Vec<Vec<i32>>,
-        now: i32,
     }
 
-    fn dfs(graph: &Graph, params: &mut DfsParams) {
-        params.visited[params.now as usize] = true;
+    fn dfs(graph: &Graph, now: i32, params: &mut DfsParams) {
+        params.visited[now as usize] = true;
         params.cnt += 1;
-        params.cnts[params.now as usize][0] = params.cnt;
+        params.cnts[now as usize][0] = params.cnt;
 
-        for v in graph.get(&params.now).unwrap().iter() {
+        println!("{}", params.cnt);
+
+        for v in graph.get(&now).unwrap().iter() {
             if !params.visited[*v as usize] {
-                dfs(&graph, params);
+                dfs(&graph, *v, params);
             }
         }
 
         params.cnt += 1;
-        params.cnts[params.now as usize][1] = params.cnt;
+        params.cnts[now as usize][1] = params.cnt;
     }
 
     let mut graph: Graph = HashMap::new();
@@ -117,10 +118,9 @@ fn p273_struct_params(n: i32, argss: &[&[i32]]) -> Vec<Vec<i32>> {
     let mut params = DfsParams {
         cnts,
         cnt: 0,
-        now: 0,
         visited,
     };
-    dfs(&graph, &mut params);
+    dfs(&graph, 0, &mut params);
     params.cnts
 }
 
