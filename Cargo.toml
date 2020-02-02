@@ -1,2 +1,2 @@
 [workspace]
-members = ["watabe"]
+members = ["chokudai", "watabe"]
