@@ -118,7 +118,7 @@ fn p130(
     for row in distances.iter() {
         for vertex in row.iter() {
             if *vertex == -1 {
-               return -1;
+                return -1;
             }
         }
     }
