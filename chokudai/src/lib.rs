@@ -169,3 +169,27 @@ fn p130_test() {
     let move_col = vec![0, 2, 0, -2];
     assert_eq!(p130(maze, start_row, start_col, move_row, move_col), -1);
 }
+
+#[allow(dead_code)]
+fn p142(answer: &str) -> i32 {
+    let answers = vec![
+        "YYYY", "YYYN", "YYNY", "YYNN", "YNYY", "YNYN", "YNNY", "YNNN", "NYYY", "NYYN", "NYNY",
+        "NYNN", "NNYY", "NNYN", "NNNY", "NNNN",
+    ];
+    let mut res: i32 = -1;
+    for (i, a) in answers.iter().enumerate() {
+        if *a == answer {
+            res = i as i32;
+        }
+    }
+    res + 1
+}
+
+#[test]
+fn p142_test() {
+    assert_eq!(p142("YNYY"), 5);
+    assert_eq!(p142("YNNN"), 8);
+    assert_eq!(p142("NNNN"), 16);
+    assert_eq!(p142("YYYY"), 1);
+    assert_eq!(p142("NYNY"), 11);
+}
