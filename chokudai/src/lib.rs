@@ -1,6 +1,67 @@
 use std::collections::VecDeque;
 
 #[allow(dead_code)]
+fn p63(first: &Vec<String>, second: &Vec<String>) -> i32 {
+    struct Main<'a> {
+        first: &'a Vec<String>,
+        second: &'a Vec<String>,
+    }
+    impl Main<'_> {
+        fn search(&self, own_i: usize, s: String) -> i32 {
+            let mut cnt = 0;
+            for (i, _) in self.first.iter().enumerate() {
+                if i != own_i {
+                    if self.first[i] == s || self.second[i] == s {
+                        cnt += 1;
+                    }
+                }
+            }
+            cnt
+        }
+        fn main(&self) -> i32 {
+            let mut max = 0;
+            for (i, v) in self.first.iter().enumerate() {
+                let new_max = self.search(i, v.to_string());
+                if new_max > max {
+                    max = new_max;
+                }
+            }
+            for (i, v) in self.second.iter().enumerate() {
+                let new_max = self.search(i, v.to_string());
+                if new_max > max {
+                    max = new_max;
+                }
+            }
+            max + 1
+        }
+    }
+    Main { first, second }.main()
+}
+
+#[test]
+fn p63_test() {
+    let first: Vec<String> = vec!["fishing", "gardening", "swimming", "fishing"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    let second: Vec<String> = vec!["hunting", "fishing", "fishing", "biting"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    assert_eq!(p63(&first, &second), 4);
+
+    let first: Vec<String> = vec!["variety", "gardening", "loquacity", "courtesy"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    let second: Vec<String> = vec!["talking", "speaking", "discussion", "meeting"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    assert_eq!(p63(&first, &second), 1);
+}
+
+#[allow(dead_code)]
 fn p122(n: i32, east: i32, west: i32, south: i32, north: i32) -> f64 {
     type Probs = Vec<f64>;
     type Grid = Vec<Vec<bool>>;
