@@ -149,19 +149,14 @@ fn p130_test() {
     let move_col = vec![0, 1, 0, -1];
     assert_eq!(p130(maze, start_row, start_col, move_row, move_col), -1);
 
-    //    let maze = vec![
-    //        ".......",
-    //        "X.X.X..",
-    //        "XXX...X",
-    //        "....X..",
-    //        "X....X.",
-    //        ".......",
-    //    ];
-    //    let start_row = 5;
-    //    let start_col = 0;
-    //    let move_row = vec![1, 0, -1, 0, -2, 1];
-    //    let move_col = vec![0, -1, 0, 1, 3, 0];
-    //    assert_eq!(p130(maze, start_row, start_col, move_row, move_col), 7);
+    let maze = vec![
+        ".......", "X.X.X..", "XXX...X", "....X..", "X....X.", ".......",
+    ];
+    let start_row = 5;
+    let start_col = 0;
+    let move_row = vec![1, 0, -1, 0, -2, 1];
+    let move_col = vec![0, -1, 0, 1, 3, 0];
+    assert_eq!(p130(maze, start_row, start_col, move_row, move_col), 7);
 
     let maze = vec!["......."];
     let start_row = 0;
