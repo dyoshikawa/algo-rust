@@ -99,13 +99,11 @@ fn p130(
     q.push_front((start_row, start_col));
     let mut distances: Vec<Vec<i32>> = vec![vec![-1; new_maze[0].len()]; new_maze.len()];
     distances[start_row as usize][start_col as usize] = 0;
-    let mut visited: Vec<Vec<bool>> = vec![vec![false; new_maze[0].len()]; new_maze.len()];
     let mut max: i32 = 0;
     while !q.is_empty() {
         let (row_i, col_i) = q.pop_back().unwrap();
         for (next_row_i, next_col_i) in graph[row_i as usize][col_i as usize].iter() {
-            if !visited[*next_row_i as usize][*next_col_i as usize] {
-                visited[*next_row_i as usize][*next_col_i as usize] = true;
+            if distances[*next_row_i as usize][*next_col_i as usize] == -1 {
                 q.push_front((*next_row_i, *next_col_i));
                 let new_distance = distances[row_i as usize][col_i as usize] + 1;
                 distances[*next_row_i as usize][*next_col_i as usize] = new_distance;
@@ -115,10 +113,9 @@ fn p130(
             }
         }
     }
-    println!("{:?}", distances);
-    for row in distances.iter() {
-        for vertex in row.iter() {
-            if *vertex == -1 {
+    for (i, row) in distances.iter().enumerate() {
+        for (j, vertex) in row.iter().enumerate() {
+            if new_maze[i][j] == '.' && *vertex == -1 {
                 return -1;
             }
         }
