@@ -62,6 +62,25 @@ fn p63_test() {
 }
 
 #[allow(dead_code)]
+fn p73(numbers: &mut Vec<i32>) -> i32 {
+    numbers.sort();
+    numbers[0] += 1;
+    let mut res = 1;
+    for v in numbers.iter() {
+        res *= *v;
+    }
+    res
+}
+
+#[test]
+fn p73_test() {
+    let mut numbers = vec![1, 2, 3];
+    assert_eq!(p73(&mut numbers), 12);
+    let mut numbers = vec![1, 3, 2, 1, 1, 3];
+    assert_eq!(p73(&mut numbers), 36);
+}
+
+#[allow(dead_code)]
 fn p122(n: i32, east: i32, west: i32, south: i32, north: i32) -> f64 {
     type Probs = Vec<f64>;
     type Grid = Vec<Vec<bool>>;
