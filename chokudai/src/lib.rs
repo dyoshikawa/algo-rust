@@ -81,6 +81,32 @@ fn p73_test() {
 }
 
 #[allow(dead_code)]
+fn p80(base: i32) -> Vec<i32> {
+    let mut res: Vec<i32> = vec![];
+    'n: for n in 2..base {
+        for k1 in 0..base {
+            for k2 in 0..base {
+                for k3 in 0..base {
+                    if (k1 + k2 * base + k3 * base * base) % n == 0 && (k1 + k2 + k3) % n != 0 {
+                        continue 'n;
+                    }
+                }
+            }
+        }
+        res.push(n);
+    }
+    res
+}
+
+#[test]
+fn p80_test() {
+    assert_eq!(p80(10), vec![3, 9]);
+    assert_eq!(p80(3), vec![2]);
+    assert_eq!(p80(26), vec![5, 25]);
+    assert_eq!(p80(30), vec![29]);
+}
+
+#[allow(dead_code)]
 fn p122(n: i32, east: i32, west: i32, south: i32, north: i32) -> f64 {
     type Probs = Vec<f64>;
     type Grid = Vec<Vec<bool>>;
