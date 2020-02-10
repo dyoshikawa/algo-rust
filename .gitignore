@@ -1,4 +1,6 @@
 .idea
 
+.envrc
+
 /target
 **/*.rs.bk
