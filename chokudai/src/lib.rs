@@ -1,6 +1,112 @@
 use std::collections::VecDeque;
 
 #[allow(dead_code)]
+fn p63(first: &Vec<String>, second: &Vec<String>) -> i32 {
+    struct Main<'a> {
+        first: &'a Vec<String>,
+        second: &'a Vec<String>,
+    }
+    impl Main<'_> {
+        fn search(&self, own_i: usize, s: String) -> i32 {
+            let mut cnt = 0;
+            for (i, _) in self.first.iter().enumerate() {
+                if i != own_i {
+                    if self.first[i] == s || self.second[i] == s {
+                        cnt += 1;
+                    }
+                }
+            }
+            cnt
+        }
+        fn main(&self) -> i32 {
+            let mut max = 0;
+            for (i, v) in self.first.iter().enumerate() {
+                let new_max = self.search(i, v.to_string());
+                if new_max > max {
+                    max = new_max;
+                }
+            }
+            for (i, v) in self.second.iter().enumerate() {
+                let new_max = self.search(i, v.to_string());
+                if new_max > max {
+                    max = new_max;
+                }
+            }
+            max + 1
+        }
+    }
+    Main { first, second }.main()
+}
+
+#[test]
+fn p63_test() {
+    let first: Vec<String> = vec!["fishing", "gardening", "swimming", "fishing"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    let second: Vec<String> = vec!["hunting", "fishing", "fishing", "biting"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    assert_eq!(p63(&first, &second), 4);
+
+    let first: Vec<String> = vec!["variety", "gardening", "loquacity", "courtesy"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    let second: Vec<String> = vec!["talking", "speaking", "discussion", "meeting"]
+        .iter()
+        .map(|v| v.to_string())
+        .collect();
+    assert_eq!(p63(&first, &second), 1);
+}
+
+#[allow(dead_code)]
+fn p73(numbers: &mut Vec<i32>) -> i32 {
+    numbers.sort();
+    numbers[0] += 1;
+    let mut res = 1;
+    for v in numbers.iter() {
+        res *= *v;
+    }
+    res
+}
+
+#[test]
+fn p73_test() {
+    let mut numbers = vec![1, 2, 3];
+    assert_eq!(p73(&mut numbers), 12);
+    let mut numbers = vec![1, 3, 2, 1, 1, 3];
+    assert_eq!(p73(&mut numbers), 36);
+}
+
+#[allow(dead_code)]
+fn p80(base: i32) -> Vec<i32> {
+    let mut res: Vec<i32> = vec![];
+    'n: for n in 2..base {
+        for k1 in 0..base {
+            for k2 in 0..base {
+                for k3 in 0..base {
+                    if (k1 + k2 * base + k3 * base * base) % n == 0 && (k1 + k2 + k3) % n != 0 {
+                        continue 'n;
+                    }
+                }
+            }
+        }
+        res.push(n);
+    }
+    res
+}
+
+#[test]
+fn p80_test() {
+    assert_eq!(p80(10), vec![3, 9]);
+    assert_eq!(p80(3), vec![2]);
+    assert_eq!(p80(26), vec![5, 25]);
+    assert_eq!(p80(30), vec![29]);
+}
+
+#[allow(dead_code)]
 fn p122(n: i32, east: i32, west: i32, south: i32, north: i32) -> f64 {
     type Probs = Vec<f64>;
     type Grid = Vec<Vec<bool>>;
@@ -99,13 +205,11 @@ fn p130(
     q.push_front((start_row, start_col));
     let mut distances: Vec<Vec<i32>> = vec![vec![-1; new_maze[0].len()]; new_maze.len()];
     distances[start_row as usize][start_col as usize] = 0;
-    let mut visited: Vec<Vec<bool>> = vec![vec![false; new_maze[0].len()]; new_maze.len()];
     let mut max: i32 = 0;
     while !q.is_empty() {
         let (row_i, col_i) = q.pop_back().unwrap();
         for (next_row_i, next_col_i) in graph[row_i as usize][col_i as usize].iter() {
-            if !visited[*next_row_i as usize][*next_col_i as usize] {
-                visited[*next_row_i as usize][*next_col_i as usize] = true;
+            if distances[*next_row_i as usize][*next_col_i as usize] == -1 {
                 q.push_front((*next_row_i, *next_col_i));
                 let new_distance = distances[row_i as usize][col_i as usize] + 1;
                 distances[*next_row_i as usize][*next_col_i as usize] = new_distance;
@@ -115,10 +219,9 @@ fn p130(
             }
         }
     }
-    println!("{:?}", distances);
-    for row in distances.iter() {
-        for vertex in row.iter() {
-            if *vertex == -1 {
+    for (i, row) in distances.iter().enumerate() {
+        for (j, vertex) in row.iter().enumerate() {
+            if new_maze[i][j] == '.' && *vertex == -1 {
                 return -1;
             }
         }
@@ -171,4 +274,28 @@ fn p130_test() {
     let move_row = vec![2, 0, -2, 0];
     let move_col = vec![0, 2, 0, -2];
     assert_eq!(p130(maze, start_row, start_col, move_row, move_col), -1);
+}
+
+#[allow(dead_code)]
+fn p142(answer: &str) -> i32 {
+    let answers = vec![
+        "YYYY", "YYYN", "YYNY", "YYNN", "YNYY", "YNYN", "YNNY", "YNNN", "NYYY", "NYYN", "NYNY",
+        "NYNN", "NNYY", "NNYN", "NNNY", "NNNN",
+    ];
+    let mut res: i32 = -1;
+    for (i, a) in answers.iter().enumerate() {
+        if *a == answer {
+            res = i as i32;
+        }
+    }
+    res + 1
+}
+
+#[test]
+fn p142_test() {
+    assert_eq!(p142("YNYY"), 5);
+    assert_eq!(p142("YNNN"), 8);
+    assert_eq!(p142("NNNN"), 16);
+    assert_eq!(p142("YYYY"), 1);
+    assert_eq!(p142("NYNY"), 11);
 }
