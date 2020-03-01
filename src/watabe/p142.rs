@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 struct Undercard {
     n: i32,
     a_arr: Vec<i32>,
@@ -5,6 +6,7 @@ struct Undercard {
     res: Vec<Vec<bool>>,
 }
 
+#[allow(dead_code)]
 impl Undercard {
     fn new(n: i32, a_arr: Vec<i32>) -> Self {
         let a_arr_len = a_arr.len();
