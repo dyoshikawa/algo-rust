@@ -82,7 +82,50 @@ impl Main {
 }
 
 #[test]
-fn invoke_test() {
+fn main_test() {
+    assert_eq!(
+        Main {
+            n: 5,
+            q: 4,
+            a: vec![1, 5, 7, 10, 21],
+            m: vec![2, 4, 17, 8]
+        }
+        .main(),
+        vec![false, false, true, true]
+    );
+}
+
+#[allow(dead_code)]
+struct Main2 {
+    n: i32,
+    a: Vec<i32>,
+    q: i32,
+    m: Vec<i32>,
+}
+
+#[allow(dead_code)]
+impl Main2 {
+    fn solve(&self, i: i32, v: i32) -> bool {
+        if i >= self.n {
+            return false;
+        }
+        if v == 0 {
+            return true;
+        }
+        let res_1 = self.solve(i + 1, v);
+        let res_2 = self.solve(i + 1, v - self.a[i as usize]);
+        return res_1 || res_2;
+    }
+    fn main(&self) -> Vec<bool> {
+        self.m
+            .iter()
+            .map(|m_one| self.solve(0, *m_one))
+            .collect::<Vec<_>>()
+    }
+}
+
+#[test]
+fn main_2_test() {
     assert_eq!(
         Main {
             n: 5,
