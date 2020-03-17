@@ -63,22 +63,26 @@ impl Main {
             }
         }
         self.set_depth(r, 0);
-        self.d.iter().enumerate().map(|(i, depth)| {
-            let children = self.c[i].clone();
-            let node = self.t[i].clone();
-            ResultNode {
-                parent: node.parent,
-                depth: *depth,
-                node_type: if node.parent == -1 {
-                    Root
-                } else if children.is_empty() {
-                    Leaf
-                } else {
-                    InternalNode
-                },
-                children,
-            }
-        }).collect::<Vec<_>>()
+        self.d
+            .iter()
+            .enumerate()
+            .map(|(i, depth)| {
+                let children = self.c[i].clone();
+                let node = self.t[i].clone();
+                ResultNode {
+                    parent: node.parent,
+                    depth: *depth,
+                    node_type: if node.parent == -1 {
+                        Root
+                    } else if children.is_empty() {
+                        Leaf
+                    } else {
+                        InternalNode
+                    },
+                    children,
+                }
+            })
+            .collect::<Vec<_>>()
     }
 }
 
