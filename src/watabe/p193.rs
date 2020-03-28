@@ -28,8 +28,16 @@ impl Main {
     }
     fn main(&mut self) -> Vec<usize> {
         for (i, a_one) in self.a.iter().enumerate() {
-            let l: Option<usize> = if a_one[1] == -1 { None } else { Some(a_one[1] as usize) };
-            let r: Option<usize> = if a_one[2] == -1 { None } else { Some(a_one[2] as usize) };
+            let l: Option<usize> = if a_one[1] == -1 {
+                None
+            } else {
+                Some(a_one[1] as usize)
+            };
+            let r: Option<usize> = if a_one[2] == -1 {
+                None
+            } else {
+                Some(a_one[2] as usize)
+            };
             self.t[i].right = l;
             self.t[i].left = r;
             if l.is_some() {
