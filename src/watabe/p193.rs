@@ -1,5 +1,6 @@
 use std::cmp::max;
 
+#[derive(Clone, Debug)]
 struct Node {
     parent: Option<usize>,
     left: Option<usize>,
@@ -14,7 +15,7 @@ struct Main {
 }
 
 impl Main {
-    fn set_height(&mut self, h: u32, u: usize) -> usize {
+    fn set_height(&mut self, h: usize, u: usize) -> usize {
         let h1 = match self.t[u].right {
             None => 0,
             Some(v) => self.set_height(h, v) + 1
@@ -26,7 +27,7 @@ impl Main {
         self.h[u] = max(h1, h2);
         self.h[u]
     }
-    fn main(&mut self) {
+    fn main(&mut self) -> Vec<usize> {
         for (i, a_one) in self.a.iter().enumerate() {
             let l = if a_one[1] == -1 {
                 None
@@ -46,14 +47,26 @@ impl Main {
             if r.is_some() {
                 self.t[r.unwrap()].parent = Some(i);
             }
-        }
+        };
+
+        let mut parent_node_index = -1;
+        for (i, node) in self.t.iter().enumerate() {
+            if node.parent.is_none() {
+                parent_node_index = i;
+                break;
+            }
+        };
+
+        self.set_height(0, parent_node_index);
+
+        self.h.clone()
     }
 }
 
 #[test]
 fn main_test() {
     let n = 9;
-    Main {
+    assert_eq!(Main {
         n,
         a: vec![
             vec![0, 1, 4],
@@ -68,5 +81,5 @@ fn main_test() {
         ],
         t: vec![Node{parent: None, left: None, right: None}; n],
         h: vec![0; n],
-    }.main();
+    }.main(), vec![]);
 }
