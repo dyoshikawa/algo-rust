@@ -52,8 +52,9 @@ impl Main {
 
 #[test]
 fn main_test() {
+    let n = 9;
     Main {
-        n: 9,
+        n,
         a: vec![
             vec![0, 1, 4],
             vec![1, 2, 3],
@@ -65,6 +66,7 @@ fn main_test() {
             vec![7, -1, -1],
             vec![8, -1, -1],
         ],
-        t:
-    }
+        t: vec![Node{parent: None, left: None, right: None}; n],
+        h: vec![0; n],
+    }.main();
 }
