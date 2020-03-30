@@ -3,6 +3,7 @@ pub mod p142;
 pub mod p188;
 pub mod p193;
 pub mod p198;
+pub mod p249;
 
 use std::collections::{HashMap, VecDeque};
 
