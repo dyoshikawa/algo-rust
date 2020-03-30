@@ -27,7 +27,21 @@ impl Main {
 #[test]
 fn main_test() {
     let n = 3;
-    assert_eq!(Main {n, dp: vec![None; n+1]}.invoke(), 3);
+    assert_eq!(
+        Main {
+            n,
+            dp: vec![None; n + 1]
+        }
+        .invoke(),
+        3
+    );
     let n = 44;
-    assert_eq!(Main {n, dp: vec![None; n+1]}.invoke(), 1134903170);
+    assert_eq!(
+        Main {
+            n,
+            dp: vec![None; n + 1]
+        }
+        .invoke(),
+        1134903170
+    );
 }
